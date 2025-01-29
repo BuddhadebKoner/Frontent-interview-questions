@@ -37,11 +37,19 @@ const App = () => {
     console.log(otp)
   }
 
+  function otpGenerate() {
+    let otp = ''
+    for (let i = 0; i < 4; i++) {
+      otp += Math.floor(Math.random() * 10)
+    }
+    return otp
+  }
+
   return (
     <>
       <div className='w-full h-screen flex flex-col justify-center items-center bg-black text-white py-10'>
         {
-          showOtp ? (
+          !showOtp ? (
             <>
               <PhoneSection
                 handleNumberCHnage={handleNumberCHnage}
@@ -51,6 +59,8 @@ const App = () => {
             </>
           ) : (
             <OtpSection
+              setShowOtp={setShowOtp}
+              otpIs={otpGenerate()}
               length={4}
               onSubmit={onSubmitOtp}
             />

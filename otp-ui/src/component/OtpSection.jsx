@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-const staticClassname = 'w-[60px] mt-5 px-3 py-3 border border-gray-500 rounded text-2xl text-center  focus:outline-none focus:ring-0'
+const staticClassname = 'w-[60px] mt-5 px-3 py-3 border border-gray-500 rounded text-2xl text-center  focus:outline-none focus:ring-0 rounded-md'
 
-const OtpSection = ({ length = 6, onSubmit }) => {
+const OtpSection = ({ length = 6, onSubmit, otpIs, setShowOtp }) => {
    const [otp, setOtp] = useState(new Array(length).fill(''))
+   const [otpError, setOtpError] = useState(false)
 
    // first focus to the first input field
    const inputRefs = useRef([])
@@ -25,6 +26,11 @@ const OtpSection = ({ length = 6, onSubmit }) => {
       const compibeOtp = newOtp.join('');
       // console.log(compibeOtp, newOtp)
       if (compibeOtp.length === length) {
+         if (otpIs !== compibeOtp) {
+            setOtpError(true)
+            return
+         }
+         setShowOtp(false)
          onSubmit(compibeOtp);
       }
 
@@ -63,7 +69,7 @@ const OtpSection = ({ length = 6, onSubmit }) => {
    return (
       <>
          <div className='w-full h-screen flex flex-col justify-center items-center bg-black text-white py-10'>
-            <h1 className='text-4xl font-semibold'>Enter OTP</h1>
+            <h1 className='text-4xl font-semibold'>Enter OTP : {otpIs}</h1>
             <form
                type='submit'
                className='flex flex-col justify-between'>
@@ -87,6 +93,7 @@ const OtpSection = ({ length = 6, onSubmit }) => {
                   }
                </div>
             </form>
+            {otpError && <p className='text-red-500 pt-5'>OTP is not valid</p>}
          </div>
       </>
    )
